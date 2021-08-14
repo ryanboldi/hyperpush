@@ -8,14 +8,15 @@
             [propeller.push.instructions.code]
             [propeller.push.instructions.polymorphic]
             [propeller.variation :as variation]
-            [hyperpush.cppn.instructions]
-            [quil.core :as q]))
+            [hyperpush.cppn.instructions]))
 
 (def max-initial-plushy-size 100)
 
 (def instructions
   (list :in1
         :in2
+        :in3
+        :in4
         :float_add
         :float_subtract
         :float_mult
@@ -38,38 +39,6 @@
 
 (defn random-plushy [] (genome/make-random-plushy instructions max-initial-plushy-size))
 
-(defn output->pixel-color [num]
-  (->> num
-       (* 2)
-       (dec)
-       (math/abs)
-       (* 255)
-       (math/ceil)))
-
-(defn output->pixel-color-basic [num]
-  (->> num
-       (* 255)
-       (math/ceil)))
-
-(defn plushy->image 
-  "expresses the phenotype of a given plushy. Note: Can only be run from inside quil sketch functions"
-  [plushy width]
-  (let [push-program (genome/plushy->push plushy)
-        im (q/create-image width width :alpha)]
-    (dotimes [x width]
-      (dotimes [y width]
-        (let [normalized-x (float (/ x width))
-              normalized-y (float (/ y width))
-              output (state/peek-stack
-                      (interpreter/interpret-program
-                       push-program
-                       (assoc state/empty-state :input {:in1 normalized-x :in2 normalized-y})
-                       100)
-                      :float)
-              float-output (if (float? output) output 0)]
-          (q/set-pixel im x y (q/color (output->pixel-color float-output))))))
-    im))
-
 (defn mutate-plushy "mutates a random plushy"
   [plushy umad-rate]
   (if (< (rand) 0.7)
@@ -91,8 +60,3 @@
       (if (= (count children) pop-size)
         children
         (recur (conj children (make-child (rand-nth parents) (rand-nth parents))))))))
-
-(defn mouse-pos->index [image-width images-per-row mouse-x mouse-y]
-  (let [x-ind (q/floor (/ mouse-x image-width))
-        y-ind (q/floor (/ mouse-y image-width))]
-    (+ x-ind (* y-ind images-per-row))))
