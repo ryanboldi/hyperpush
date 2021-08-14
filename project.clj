@@ -7,4 +7,5 @@
                  [net.clojars.lspector/propeller "0.2.3"]]
   :main ^:skip-aot hyperpush.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]]}})

@@ -7,5 +7,12 @@
     '()
     (repeatedly width #(repeat height 0))))
 
+(defn get-width 
+  "returns the width of a substrate layer"
+  [substrate-layer]
+  (count substrate-layer))
 
-
+(defn get-height
+  "returns the height of a substrate layer"
+  [substrate-layer]
+  (count (first substrate-layer)))
