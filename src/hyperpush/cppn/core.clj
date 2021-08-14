@@ -15,10 +15,11 @@
 (defn get-output
   "given a push program and a list of inputs, return the value at the top of float stack"
   [push & inputs]
-  (let [output (state/peek-stack
+  (let [input (apply get-input-map inputs)
+        output (state/peek-stack
                 (interpreter/interpret-program
                  push
-                 (assoc state/empty-state :input (get-input-map inputs))
+                 (assoc state/empty-state :input input)
                  100)
                 :float)
         float-output (if (float? output) output 0)]
