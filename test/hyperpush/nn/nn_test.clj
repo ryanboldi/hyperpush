@@ -7,4 +7,8 @@
     (testing "width is correct"
       (is (= 10 (count substrate))))
     (testing "height is correct"
-      (is (= 4 (count (first substrate)))))))
+      (is (= 4 (count (first substrate))))))
+  (testing "invalid substrate should return empty list"
+    (is (empty? (make-substrate-layer -1 -1)))
+    (is (empty? (make-substrate-layer 3 -1)))
+    (is (empty? (make-substrate-layer -1 3)))))

@@ -3,6 +3,9 @@
 (defn make-substrate-layer
   "creates a single substrate layer of size width x height"
   [width height]
-  (repeatedly width #(repeat height 0)))
+  (if (or (<= width 0) (<= height 0))
+    '()
+    (repeatedly width #(repeat height 0))))
 
-(make-substrate-layer 10 3)
+
+
