@@ -24,4 +24,6 @@
         height-2 (get-height layer-2)]
     (repeat width-1 (repeat height-1 (repeat width-2 (repeat height-2 0))))))
 
-(empty-connection-matrix 1 1 )
+(empty-connection-matrix (make-substrate-layer 2 2) (make-substrate-layer 1 1))
+
+(defn get-weight [connection-matrix x1 y1 x2 y2]) 
