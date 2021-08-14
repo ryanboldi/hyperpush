@@ -10,3 +10,5 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+.lsp/sqlite.db
+.calva/output-window/output.calva-repl
