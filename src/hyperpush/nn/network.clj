@@ -36,8 +36,8 @@ output-layer
               (swap! blank-slate assoc-in [x1 y1 x2 y2] (c/get-output cppn [x1-norm y1-norm x2-norm y2-norm])))))))
     @blank-slate))
 
-(create-network input-layer output-layer (random-push))
+(defn get-weight [connection-matrix x1 y1 x2 y2]
+  (get-in connection-matrix [x1 y1 x2 y2]))
 
-(defn get-weight [connection-matrix x1 y1 x2 y2])
+(defn feed-forward [inputs connection-matrix])
 
-(defn feed-forward [inputs])
