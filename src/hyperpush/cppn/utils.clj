@@ -1,7 +1,6 @@
 (ns hyperpush.cppn.utils
   (:require [propeller.genome :as genome]
             [propeller.tools.math :as math]
-            [propeller.push.interpreter :as interpreter]
             [propeller.push.state :as state]
             [propeller.push.instructions.numeric]
             [propeller.push.instructions.input-output]
@@ -38,6 +37,8 @@
         1))
 
 (defn random-plushy [] (genome/make-random-plushy instructions max-initial-plushy-size))
+
+(defn random-push [] (genome/plushy->push (random-plushy)))
 
 (defn mutate-plushy "mutates a random plushy"
   [plushy umad-rate]
