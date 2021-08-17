@@ -1,7 +1,7 @@
 (ns hyperpush.nn.nn-test
   (:require [clojure.test :refer [deftest testing is]]
             [hyperpush.cppn.utils :refer [random-push]]
-            [hyperpush.nn.substrate :refer [make-substrate-layer get-width get-height]]
+            [hyperpush.nn.substrate :refer [make-substrate-layer get-width get-height convert-to-vector]]
             [hyperpush.nn.network :refer [create-network feed-forward]]))
 
 (deftest substrate-test-on-creation
@@ -16,7 +16,9 @@
     (is (empty? (make-substrate-layer -1 3))))
   (testing "getter functions should return correct values"
     (is (= (get-height (make-substrate-layer 4 10)) 10))
-    (is (= (get-width (make-substrate-layer 4 10)) 4))))
+    (is (= (get-width (make-substrate-layer 4 10)) 4)))
+  (testing "vector conversion function is correct"
+    (is (and (vector? (make-substrate-layer 10 4)) (vector? (first (make-substrate-layer 10 4)))))))
 
 (deftest connection-matrix-tests
   (testing "network creation respects shape of input and output layer"
@@ -26,8 +28,7 @@
       (is (= (get-width input-layer) (count connection-matrix)))
       (is (= (get-height input-layer) (count (first connection-matrix))))
       (is (= (get-width output-layer) (count (-> connection-matrix (first) (first))))) 
-      (is (= (get-height output-layer) (count (-> connection-matrix (first) (first) (first)))))))
-  )
+      (is (= (get-height output-layer) (count (-> connection-matrix (first) (first) (first))))))))
 
 (deftest feedforward-tests
     (let [input-layer (make-substrate-layer 1 3)
