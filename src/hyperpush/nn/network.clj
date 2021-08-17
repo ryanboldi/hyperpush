@@ -4,6 +4,7 @@
             [hyperpush.cppn.core :as c]))
 
 (defn empty-connection-matrix [layer-1 layer-2]
+  "returns a nested vector filled with zeros that connects two 2D layers together"
   (let [width-1 (get-width layer-1)
         height-1 (get-height layer-1)
         width-2 (get-width layer-2)
@@ -30,11 +31,13 @@
     @blank-slate))
 
 (defn get-weight [connection-matrix x1 y1 x2 y2]
+  "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
   (if (list? connection-matrix)
     (-> connection-matrix (nth x1) (nth y1) (nth x2) (nth y2))
     (get-in connection-matrix [x1 y1 x2 y2])))
 
 (defn feed-forward [input connection-matrix]
+  "feeds a 2d layer of inputs through a connection matrix to create a 2d layer of outputs"
   (let [input-shape (-> connection-matrix)
         input-width (count input-shape)
         input-height (count (first input-shape))]
