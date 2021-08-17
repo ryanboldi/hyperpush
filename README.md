@@ -4,6 +4,21 @@ Based heavily on The Hypercube-based NeuroEvolution of Augmenting Topologies ([H
 
 A previous project, [pushgp-art](https://github.com/ryanboldi/pushgp-art) uses the same indirect encoding concept to encode black and white images. This package utilizes indirect encodings as a representation of the connectivity patterns of a neural network, as opposed to image pixel values.
 
+## Dependencies
+[Propeller](https://github.com/lspector/propeller), a library that evolves push programs
+
+
+
+
+
+
+
+
+
+
+
+
+----
 ## License
 
 Copyright © 2021 Ryan Boldi
