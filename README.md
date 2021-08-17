@@ -2,23 +2,7 @@
 
 Based heavily on The Hypercube-based NeuroEvolution of Augmenting Topologies ([HyperNEAT](http://eplex.cs.ucf.edu/hyperNEATpage/)), hyperpush is a package for evolving indirect encodings for neural networks.
 
-## Usage
-
-FIXME: explanation
-
-    $ java -jar hyperpush-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+A previous project, [pushgp-art](https://github.com/ryanboldi/pushgp-art) uses the same indirect encoding concept to encode black and white images. This package utilizes indirect encodings as a representation of the connectivity patterns of a neural network, as opposed to image pixel values.
 
 ## License
 
