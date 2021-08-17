@@ -7,18 +7,12 @@ A previous project, [pushgp-art](https://github.com/ryanboldi/pushgp-art) uses t
 ## Dependencies
 [Propeller](https://github.com/lspector/propeller), a library that evolves push programs
 
+## Examples
 
+<!--xor goes here></!-->
 
+## Usage
 
-
-
-
-
-
-
-
-
-----
 ## License
 
 Copyright © 2021 Ryan Boldi
