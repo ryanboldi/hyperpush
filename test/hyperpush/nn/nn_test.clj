@@ -27,10 +27,15 @@
       (is (= (get-height input-layer) (count (first connection-matrix))))
       (is (= (get-width output-layer) (count (-> connection-matrix (first) (first))))) 
       (is (= (get-height output-layer) (count (-> connection-matrix (first) (first) (first)))))))
-  (testing "feedforward output shape matches network output shape"
-    (let [input-layer (make-substrate-layer 3 5)
-          output-layer (make-substrate-layer 8 10)
-          connection-matrix (create-network input-layer output-layer (random-push))
-          output (feed-forward input-layer connection-matrix)]
-      (is (= (get-width output-layer) (get-width output)))
-      (is (= (get-height output-layer) (get-height output))))))
+  )
+
+(deftest feedforward-tests
+    (let [input-layer (make-substrate-layer 1 3)
+          output-layer (make-substrate-layer 2 2)
+          connection-matrix (create-network input-layer output-layer (random-push))]
+      (testing "incorrect input shape throws assertion error"
+        (is (thrown? AssertionError (feed-forward [[1]] connection-matrix))))
+      (testing "feedforward output shape matches network output shape"
+        (let [output (feed-forward input-layer connection-matrix)]
+          (is (= (get-width output-layer) (get-width output)))
+          (is (= (get-height output-layer) (get-height output)))))))
