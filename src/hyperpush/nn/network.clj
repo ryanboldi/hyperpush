@@ -10,13 +10,6 @@
         height-2 (get-height layer-2)]
     (apply vector (repeat width-1 (apply vector (repeat height-1 (apply vector (repeat width-2 (apply vector (repeat height-2 0))))))))))
 
-(def input-layer (make-substrate-layer 1 5))
-
-(def output-layer (make-substrate-layer 1 1))
-
-input-layer
-output-layer
-
 (defn create-network
   "creates a network from two substrate layers and a cppn for the weights"
   [input-layer output-layer cppn]
@@ -37,7 +30,25 @@ output-layer
     @blank-slate))
 
 (defn get-weight [connection-matrix x1 y1 x2 y2]
-  (get-in connection-matrix [x1 y1 x2 y2]))
+  (if (list? connection-matrix)
+    (-> connection-matrix (nth x1) (nth y1) (nth x2) (nth y2))
+    (get-in connection-matrix [x1 y1 x2 y2])))
 
-(defn feed-forward [inputs connection-matrix])
-
+(defn feed-forward [input connection-matrix]
+  (let [input-shape (-> connection-matrix)
+        input-width (count input-shape)
+        input-height (count (first input-shape))]
+    (assert (and
+             (= input-height (get-height input))
+             (= input-width (get-width input)))
+            "input shape should match the connection matrix's shape")
+    (let [output-shape (-> connection-matrix (nth 0) (nth 0))
+          output-width (count output-shape)
+          output-height (count (nth output-shape 0))]
+      (for [x (range output-width)]
+        (for [y (range output-height)]
+          (->> (for [i (range input-width)]
+                 (for [j (range input-height)]
+                   (* (get-weight connection-matrix i j x y) (get-in input [i j]))))
+               (map #(apply + %))
+               (apply +)))))))
