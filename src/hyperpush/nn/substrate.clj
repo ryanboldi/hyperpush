@@ -25,4 +25,10 @@
 
 (defn make-2d-substrate
   "makes a list of 1d-layers, that represent an entire 2d substrate"
-  [inputs outputs & hiddens])
+  [inputs outputs & hiddens]
+  (->> hiddens
+       (map #(make-1d-layer %))
+       (concat (vector (make-1d-layer inputs)))
+       (reverse)
+       (concat (vector (make-1d-layer outputs)))
+       (reverse)))
