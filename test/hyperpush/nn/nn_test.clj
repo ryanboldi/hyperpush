@@ -1,10 +1,10 @@
 (ns hyperpush.nn.nn-test
   (:require [clojure.test :refer [deftest testing is]]
             [hyperpush.cppn.utils :refer [random-push]]
-            [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height convert-to-vector]]
+            [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height make-1d-layer]]
             [hyperpush.nn.network :refer [create-network feed-forward]]))
 
-(deftest substrate-test-on-creation
+(deftest substrate-layer-2d-test-on-creation
   (let [substrate (make-2d-square-layer 10 4)]
     (testing "width is correct"
       (is (= 10 (count substrate))))
@@ -19,6 +19,11 @@
     (is (= (get-width (make-2d-square-layer 4 10)) 4)))
   (testing "vector conversion function is correct"
     (is (and (vector? (make-2d-square-layer 10 4)) (vector? (first (make-2d-square-layer 10 4)))))))
+
+(deftest substrate-layer-1d-test-on-creation
+  (let [substrate (make-1d-layer 3)]
+    (testing "width is correct"
+      (is (= 3 (count substrate))))))
 
 (deftest connection-matrix-tests
   (testing "network creation respects shape of input and output layer"

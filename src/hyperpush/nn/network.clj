@@ -1,5 +1,6 @@
 (ns hyperpush.nn.network
   (:require [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height]]
+            [hyperpush.nn.utils :refer [convert-to-high-d-vector]]
             [hyperpush.cppn.utils :refer [random-push]]
             [hyperpush.cppn.core :as c]))
 
@@ -51,10 +52,11 @@
     (let [output-shape (-> connection-matrix (nth 0) (nth 0))
           output-width (count output-shape)
           output-height (count (nth output-shape 0))]
-      (for [x (range output-width)]
+      (->> (for [x (range output-width)]
         (for [y (range output-height)]
           (->> (for [i (range input-width)]
                  (for [j (range input-height)]
                    (* (get-weight connection-matrix i j x y) (get-in input [i j]))))
                (map #(apply + %))
-               (apply +)))))))
+               (apply +))))
+      (convert-to-high-d-vector)))))
