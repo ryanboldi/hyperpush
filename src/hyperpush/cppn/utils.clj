@@ -11,7 +11,7 @@
 
 (def max-initial-plushy-size 100)
 
-(def instructions
+(def instructions ;4 inputs
   (list :in1
         :in2
         :in3
