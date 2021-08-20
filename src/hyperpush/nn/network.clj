@@ -1,5 +1,5 @@
 (ns hyperpush.nn.network
-  (:require [hyperpush.nn.substrate :refer [make-substrate-layer get-width get-height]]
+  (:require [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height]]
             [hyperpush.cppn.utils :refer [random-push]]
             [hyperpush.cppn.core :as c]))
 
