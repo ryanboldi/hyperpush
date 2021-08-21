@@ -26,7 +26,7 @@
 (def input-layer (make-1d-layer 3))
 (def output-layer (make-1d-layer 2))
 
-(connect-1d-layers input-layer output-layer (random-push))
+(connect-1d-layers input-layer output-layer 0 1 (random-push))
 
 (comment
 
