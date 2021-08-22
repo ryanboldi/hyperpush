@@ -1,9 +1,10 @@
 (ns hyperpush.nn.nn-test
   (:require [clojure.test :refer [deftest testing is]]
+            [clojure.core.matrix :as m]
             [hyperpush.cppn.utils :refer [random-push]]
             [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height make-1d-layer make-2d-substrate]]
             [hyperpush.nn.utils :refer [normalize-center-biased]]
-            [hyperpush.nn.network :refer [feed-forward]]))
+            [hyperpush.nn.network :refer [feed-forward-1d connect-1d-layers]]))
 
 (deftest substrate-layer-2d-test
   (let [substrate (make-2d-square-layer 10 4)]
@@ -36,3 +37,10 @@
     (is (= 0.5 (normalize-center-biased 0 1))))
   (testing "three nodes center gets place in the center"
     (is (= 0.5 (normalize-center-biased 1 3)))))
+
+(deftest feed-forward-test
+  (let [input-layer (vector 1 2 3)
+        output-layer (vector 0 0 0)
+        weight-matrix (connect-1d-layers input-layer output-layer 0 1 (random-push))]
+    (testing "shape of output is same as expected shape"
+      (is (= (m/shape output-layer) (m/shape (feed-forward-1d input-layer weight-matrix)))))))
