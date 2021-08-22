@@ -36,28 +36,3 @@
     (is (= 0.5 (normalize-center-biased 0 1))))
   (testing "three nodes center gets place in the center"
     (is (= 0.5 (normalize-center-biased 1 3)))))
-
-(comment
-
-(deftest connection-matrix-tests
-  (testing "network creation respects shape of input and output layer"
-    (let [input-layer (make-2d-square-layer 1 5)
-          output-layer (make-2d-square-layer 2 3)
-          connection-matrix (create-3d-network input-layer output-layer (random-push))]
-      (is (= (get-width input-layer) (count connection-matrix)))
-      (is (= (get-height input-layer) (count (first connection-matrix))))
-      (is (= (get-width output-layer) (count (-> connection-matrix (first) (first))))) 
-      (is (= (get-height output-layer) (count (-> connection-matrix (first) (first) (first))))))))
-
-(deftest feedforward-tests
-    (let [input-layer (make-2d-square-layer 1 3)
-          output-layer (make-2d-square-layer 2 2)
-          connection-matrix (create-3d-network input-layer output-layer (random-push))]
-      (testing "incorrect input shape throws assertion error"
-        (is (thrown? AssertionError (feed-forward [[1]] connection-matrix))))
-      (testing "feedforward output shape matches network output shape"
-        (let [output (feed-forward input-layer connection-matrix)]
-          (is (= (get-width output-layer) (get-width output)))
-          (is (= (get-height output-layer) (get-height output)))))))
-
-)

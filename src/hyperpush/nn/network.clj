@@ -5,10 +5,6 @@
             [hyperpush.cppn.utils :refer [random-push]]
             [hyperpush.cppn.core :as c]))
 
-(defn connect-2d "returns a list of connection matrices, each representing the transition from one layer to the next"
-  [substrate])
-
-
 (defn connect-1d-layers
  "outputs a w x h matrix where w is the height of layer 1 and h is the height of layer-2"
   [layer-1 layer-2 layer-1-x-normalized layer-2-x-normalized cppn]
@@ -23,10 +19,19 @@
                      (normalize-center-biased r layer-2-height)
                       layer-2-x-normalized])) empty)))
 
-(def input-layer (make-1d-layer 3))
-(def output-layer (make-1d-layer 2))
+(defn connect-2d "returns a list of connection matrices, each representing the transition from one layer to the next"
+  [substrate])
 
-(connect-1d-layers input-layer output-layer 0 1 (random-push))
+
+(def input-layer (vector 1 2 3))
+input-layer
+(def output-layer (make-1d-layer 2))
+output-layer
+
+(def weights (m/transpose (connect-1d-layers input-layer output-layer 0 1 (random-push))))
+weights
+
+(m/mmul weights input-layer)
 
 (comment
 
