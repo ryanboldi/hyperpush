@@ -20,7 +20,8 @@
                       layer-2-x-normalized])) empty)
         (m/transpose))))
 
-(defn feed-forward-1d "feeds forward from one 1D layer to the next"
+(defn feed-forward-1d 
+  "feeds forward from one 1D layer to the next"
   [inputs connection-matrix]
   (->> (m/mmul connection-matrix inputs)
        (m/emap #(m/tanh %))))
