@@ -27,7 +27,13 @@
        (m/emap #(m/tanh %))))
 
 (defn connect-2d "returns a list of connection matrices, each representing the transition from one layer to the next"
-  [substrate])
+  [substrate cppn]
+  (let [num-layers (count substrate)
+        layer-sep (float (/ 1 num-layers))
+        layer-x-values (partition 2 1 (map #(* layer-sep %) (range num-layers)))
+        seperated-substrate (partition 2 1 substrate)]
+    (println seperated-substrate layer-x-values)
+    (map #(connect-1d-layers (first %1) (second %1) (first %2) (second %2) cppn) seperated-substrate layer-x-values)))
 
 (defn get-weight
  "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
