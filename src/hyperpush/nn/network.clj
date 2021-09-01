@@ -20,7 +20,7 @@
                       layer-2-x-normalized])) empty)
         (m/transpose))))
 
-(defn feed-forward-1d 
+(defn feed-forward-1d-layer 
   "feeds forward from one 1D layer to the next"
   [inputs connection-matrix]
   (->> (m/mmul connection-matrix inputs)
@@ -34,6 +34,16 @@
         seperated-substrate (partition 2 1 substrate)]
     (println seperated-substrate layer-x-values)
     (map #(connect-1d-layers (first %1) (second %1) (first %2) (second %2) cppn) seperated-substrate layer-x-values)))
+
+(defn feed-forward-2d
+  "feeds forward through a list of connection matrices"
+  [list-of-connection-matrices inputs]
+  (let [layers (count list-of-connection-matrices)]
+  (loop [index 0 current inputs]
+    (if (>= index layers)
+      current
+      (recur (inc index) (feed-forward-1d-layer current (nth list-of-connection-matrices index)))))))
+
 
 (defn get-weight
  "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
