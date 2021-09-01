@@ -4,7 +4,7 @@
             [hyperpush.cppn.utils :refer [random-push]]
             [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height make-1d-layer make-2d-substrate]]
             [hyperpush.nn.utils :refer [normalize-center-biased]]
-            [hyperpush.nn.network :refer [feed-forward-1d connect-1d-layers]]))
+            [hyperpush.nn.network :refer [feed-forward-1d-layer connect-1d-layers feed-forward-2d]]))
 
 (deftest substrate-layer-2d-test
   (let [substrate (make-2d-square-layer 10 4)]
@@ -43,4 +43,8 @@
         output-layer (vector 0 0 0)
         weight-matrix (connect-1d-layers input-layer output-layer 0 1 (random-push))]
     (testing "shape of output is same as expected shape"
-      (is (= (m/shape output-layer) (m/shape (feed-forward-1d input-layer weight-matrix)))))))
+      (is (= (m/shape output-layer) (m/shape (feed-forward-1d-layer input-layer weight-matrix))))))
+  (let [network (make-2d-substrate 5 3 10 10)
+        result (feed-forward-2d network [0 1 2 3 4])]
+    (testing "output of deep and wide nn is correct size"
+      (is (= (m/shape result) (m/shape [0 1 2]))))))
