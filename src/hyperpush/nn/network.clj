@@ -1,5 +1,6 @@
 (ns hyperpush.nn.network
   (:require [clojure.core.matrix :as m]
+            [hyperpush.cppn.instructions]
             [hyperpush.nn.substrate :refer [make-2d-square-layer get-width get-height make-1d-layer]]
             [hyperpush.nn.utils :refer [convert-to-high-d-vector normalize-center-biased]]
             [hyperpush.cppn.utils :refer [random-push]]
@@ -42,7 +43,7 @@
   (loop [index 0 current inputs]
     (if (>= index layers)
       current
-      (recur (inc index) (feed-forward-1d-layer current (nth list-of-connection-matrices index)))))))
+      (recur (inc index) (map #(hyperpush.cppn.instructions/sigmoid %) (feed-forward-1d-layer current (nth list-of-connection-matrices index))))))))
 
 
 (defn get-weight
