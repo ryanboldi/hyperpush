@@ -4,4 +4,15 @@
             [hyperpush.cppn.core :as cppn]
             [hyperpush.cppn.utils :as utils]))
 
-(def nice 1)
+;==== XOR
+
+(def xor-substrate (subs/make-2d-substrate 2 1 3 3 3 3 3 3 3 3 3 3 3 3))
+
+xor-substrate
+
+(def xor-network (nn/connect-2d xor-substrate (utils/random-push)))
+
+xor-network
+(def xor-good)
+
+(nn/feed-forward-2d xor-network [0 1])
