@@ -45,32 +45,9 @@
       current
       (recur (inc index) (map #(hyperpush.cppn.instructions/sigmoid %) (feed-forward-1d-layer current (nth list-of-connection-matrices index))))))))
 
-
 (defn get-weight
  "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
   [connection-matrix x1 y1 x2 y2]
   (if (list? connection-matrix)
     (-> connection-matrix (nth x1) (nth y1) (nth x2) (nth y2))
     (get-in connection-matrix [x1 y1 x2 y2])))
-
-(defn feed-forward
-  "feeds a 2d layer of inputs through a connection matrix to create a 2d layer of outputs"
-  [input connection-matrix]
-  (let [input-shape (-> connection-matrix)
-        input-width (count input-shape)
-        input-height (count (first input-shape))]
-    (assert (and
-             (= input-height (get-height input))
-             (= input-width (get-width input)))
-            "input shape should match the connection matrix's shape")
-    (let [output-shape (-> connection-matrix (nth 0) (nth 0))
-          output-width (count output-shape)
-          output-height (count (nth output-shape 0))]
-      (->> (for [x (range output-width)]
-        (for [y (range output-height)]
-          (->> (for [i (range input-width)]
-                 (for [j (range input-height)]
-                   (* (get-weight connection-matrix i j x y) (get-in input [i j]))))
-               (map #(apply + %))
-               (apply +))))
-      (convert-to-high-d-vector)))))
