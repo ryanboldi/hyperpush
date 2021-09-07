@@ -10,7 +10,7 @@
   "goal XOR function" 
   [in1 in2] (if (= in1 in2) 0 1))
 
-(def xor-substrate (2 subs/make-2d-substrate 1 1))
+(def xor-substrate (subs/make-2d-substrate 2 1 1))
 
 xor-substrate
 
