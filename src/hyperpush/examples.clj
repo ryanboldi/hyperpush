@@ -24,12 +24,20 @@ xor-substrate
 
 (defn evaluate-neural-network-xor
   "evaluates a neural network based on proxmity to XOR behavior, with a given input.
-   Uses squared difference from expected output.
+   Uses absolute difference from expected output.
    returns error from 0 to 1"
   [network in1 in2]
   (let [expected-output (XOR in1 in2)
         actual-output (nn/feed-forward-2d network [in1 in2])]
-    (Math/pow (apply - expected-output actual-output) 2)))
+    (Math/abs (apply - expected-output actual-output))))
+
+
+(def population (repeatedly 10 #(random-xor-network)))
+
+(defn network-rep [pop]
+  (map #(nn/connect-2d xor-substrate %) pop))
+
+(map #(evaluate-neural-network-xor % 1 0) population) 
 
 (nn/feed-forward-2d candidate-1 [0 1])
 
