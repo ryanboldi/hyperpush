@@ -6,4 +6,17 @@
             [hyperpush.cppn.utils :as utils]))
 
 
-;- features needed to be stored in population: push program + nn + fitness
+;propeller pop map needs
+;
+; :errors
+;
+;
+;
+
+(def pop-member {:plushy 3 :nn '(1 2 3) :errors [0 1 2]})
+
+(def population (repeat 10 pop-member))
+
+(map rand-nth (vals (group-by :errors population)))
+
+(lexicase-selection population {})
