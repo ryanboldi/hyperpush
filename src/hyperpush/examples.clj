@@ -2,7 +2,8 @@
   (:require [hyperpush.nn.network :as nn]
             [hyperpush.nn.substrate :as subs]
             [hyperpush.cppn.core :as cppn]
-            [hyperpush.cppn.utils :as utils]))
+            [hyperpush.cppn.utils :as utils]
+            [hyperpush.gp.core :as gp]))
 
 ;==== XOR
 
@@ -12,33 +13,24 @@
 
 (def xor-substrate (subs/make-2d-substrate 2 1 1))
 
-xor-substrate
-
 (defn random-xor-network []
   (let [push (utils/random-push)]
     (nn/connect-2d xor-substrate push)))
-
-(def candidate-1 (random-xor-network))
-
-(:a (apply assoc {} (interleave (list :a :b :c) (list 1 2 3))))
 
 (defn evaluate-neural-network-xor
   "evaluates a neural network based on proxmity to XOR behavior, with a given input.
    Uses absolute difference from expected output.
    returns error from 0 to 1"
-  [network in1 in2]
+  [network [in1 in2]]
   (let [expected-output (XOR in1 in2)
         actual-output (nn/feed-forward-2d network [in1 in2])]
     (Math/abs (apply - expected-output actual-output))))
 
+(defn assign-fitness-xor [population]
+    (map #(assoc %1 :errors %2) population
+           (map #(for [x (range 2)
+                        y (range 2)]
+                    (apply (fn [x y] (evaluate-neural-network-xor (:nn %) [x y])) [x y])) 
+                population)))
 
-(def population (repeatedly 10 #(random-xor-network)))
-
-(defn network-rep [pop]
-  (map #(nn/connect-2d xor-substrate %) pop))
-
-(map #(evaluate-neural-network-xor % 1 0) population) 
-
-(nn/feed-forward-2d candidate-1 [0 1])
-
-(evaluate-neural-network-xor candidate-1 0 1)
+(assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate))
