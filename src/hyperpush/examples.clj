@@ -34,6 +34,8 @@
                     (apply (fn [x y] (evaluate-neural-network-xor (:nn %) [x y])) [x y])) 
                 population)))
 
-(def pop (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate)))
+(def pop-map (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate)))
 
-(slc/lexicase-selection pop :null)
+(count pop-map)
+
+(count (gp/create-new-population pop-map))
