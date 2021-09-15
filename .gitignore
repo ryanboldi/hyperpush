@@ -11,4 +11,6 @@ pom.xml.asc
 .hgignore
 .hg/
 .lsp/sqlite.db
+.clj-kondo/
+.lsp/
 .calva/output-window/output.calva-repl

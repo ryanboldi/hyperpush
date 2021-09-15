@@ -1,5 +1,6 @@
 (ns hyperpush.examples
   (:require [hyperpush.nn.network :as nn]
+            [propeller.selection :as slc]
             [hyperpush.nn.substrate :as subs]
             [hyperpush.cppn.core :as cppn]
             [hyperpush.cppn.utils :as utils]
@@ -33,4 +34,6 @@
                     (apply (fn [x y] (evaluate-neural-network-xor (:nn %) [x y])) [x y])) 
                 population)))
 
-(assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate))
+(def pop (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate)))
+
+(slc/lexicase-selection pop :null)
