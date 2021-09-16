@@ -39,5 +39,36 @@
         parents (repeatedly num-parents #(slc/lexicase-selection pop-map :null))]
     (loop [children (repeatedly (int (* crossover-rate popsize)) #(crossover (rand-nth parents) (rand-nth parents)))]
       (if (<= popsize (count children))
-        children
+        (map #(assoc {} :plushy %) children)
         (recur (conj children (mutate (rand-nth parents) umad-rate)))))))
+
+(defn print-stats "prints the pop average fitness across all errors, and best individual on each case"
+  [pop]
+  (let [popsize (count pop)
+        casesize (count (:errors (first pop)))]
+  (->> pop
+           (map #(:errors %))
+           (apply concat)
+           (apply +)
+           (* (/ 1 (* popsize casesize)))
+           (float)
+           (str)
+           (println "Population Average Error: "))
+      (->> pop
+           (map #(:errors %))
+           (map #(apply + %))
+           (map #(/ % casesize))
+           (apply min)
+           (println "Population Best Average Error: "))))
+
+(defn get-best-member [pop]
+  (let [popsize (count pop)
+        casesize (count (:errors (first pop)))]
+    (->> pop
+         (map #(:errors %))
+         (map #(apply + %))
+         (map #(/ % casesize))
+         (map-indexed vector)
+         (apply min-key second)
+         (first)
+         (nth pop))))

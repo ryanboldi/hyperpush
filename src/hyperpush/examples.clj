@@ -36,6 +36,38 @@
 
 (def pop-map (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/init-population 10) xor-substrate)))
 
-(count pop-map)
+(gp/init-population 10)
+(gp/create-new-population pop-map)
 
-(count (gp/create-new-population pop-map))
+(def new-pop (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/create-new-population pop-map) xor-substrate)))
+
+(def new-pop (-> pop-map
+                 gp/create-new-population
+                 (gp/genotype-to-phenotype-2d xor-substrate)
+                 assign-fitness-xor))
+
+(def newer-pop (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/create-new-population new-pop) xor-substrate)))
+
+
+(gp/print-stats pop-map)
+(gp/print-stats newer-pop)
+
+
+(defn -main []
+  (println "RUNNING XOR EVOLUTION")
+  (let [generations 100
+        goal-error 0.1
+        popsize 100]
+    (loop [population (-> popsize
+                          gp/init-population
+                          (gp/genotype-to-phenotype-2d xor-substrate)
+                          assign-fitness-xor)
+           gen-num 0]
+      (if (>= gen-num generations)
+        (do (gp/print-stats population) (gp/get-best-member population))
+            (recur (-> population
+                       gp/create-new-population
+                       (gp/genotype-to-phenotype-2d xor-substrate)
+                       assign-fitness-xor) (inc gen-num))))))
+
+(-main)

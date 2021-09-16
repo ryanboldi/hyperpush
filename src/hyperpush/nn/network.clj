@@ -7,21 +7,21 @@
             [hyperpush.cppn.core :as c]))
 
 (defn connect-1d-layers
- "outputs a w x h matrix where w is the height of layer 1 and h is the height of layer-2"
+  "outputs a w x h matrix where w is the height of layer 1 and h is the height of layer-2"
   [layer-1 layer-2 layer-1-x-normalized layer-2-x-normalized cppn]
   (let [layer-1-height (count layer-1)
         layer-2-height (count layer-2)
         empty (m/zero-matrix layer-1-height layer-2-height)]
-    (-> (m/emap-indexed 
-     (fn [[c r] _] 
-       (c/get-output cppn 
-                     [(normalize-center-biased c layer-1-height)
-                      layer-1-x-normalized
-                     (normalize-center-biased r layer-2-height)
-                      layer-2-x-normalized])) empty)
+    (-> (m/emap-indexed
+         (fn [[c r] _]
+           (c/get-output cppn
+                         [(normalize-center-biased c layer-1-height)
+                          layer-1-x-normalized
+                          (normalize-center-biased r layer-2-height)
+                          layer-2-x-normalized])) empty)
         (m/transpose))))
 
-(defn feed-forward-1d-layer 
+(defn feed-forward-1d-layer
   "feeds forward from one 1D layer to the next"
   [inputs connection-matrix]
   (->> (m/mmul connection-matrix inputs)
@@ -38,14 +38,16 @@
 (defn feed-forward-2d
   "feeds forward through a list of connection matrices"
   [list-of-connection-matrices inputs]
+  (println inputs)
   (let [layers (count list-of-connection-matrices)]
-  (loop [index 0 current inputs]
-    (if (>= index layers)
-      current
-      (recur (inc index) (map #(hyperpush.cppn.instructions/sigmoid %) (feed-forward-1d-layer current (nth list-of-connection-matrices index))))))))
+    (loop [index 0 current (conj inputs 1)]
+      (println current)
+      (if (>= index layers)
+        current
+        (recur (inc index) (map #(hyperpush.cppn.instructions/sigmoid %) (feed-forward-1d-layer current (nth list-of-connection-matrices index))))))))
 
 (defn get-weight
- "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
+  "returns the weight from (x1, y1) to (x2, y2) in a given connection-matrix"
   [connection-matrix x1 y1 x2 y2]
   (if (list? connection-matrix)
     (-> connection-matrix (nth x1) (nth y1) (nth x2) (nth y2))

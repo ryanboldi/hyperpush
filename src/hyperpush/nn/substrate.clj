@@ -30,7 +30,7 @@
         hiddens (butlast rest)]
   (->> hiddens
        (map #(make-1d-layer %))
-       (concat (vector (make-1d-layer inputs)))
+       (concat (vector (make-1d-layer (inc inputs))))
        (reverse)
        (concat (vector (make-1d-layer outputs)))
        (reverse))))
