@@ -59,7 +59,7 @@ new-pop
 
 (defn -main []
   (println "RUNNING XOR EVOLUTION")
-  (let [generations 1000
+  (let [generations 5000
         goal-error 0.1
         popsize 10]
     (loop [population (-> popsize

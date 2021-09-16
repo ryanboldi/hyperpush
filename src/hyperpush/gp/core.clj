@@ -26,7 +26,7 @@
   [parent1 umad-rate]
   (let [mutation-type (rand)]
   (if (< mutation-type 0.3) (v/uniform-replacement (:plushy parent1) utils/instructions umad-rate)
-      (if (< mutation-type 0.6) (v/uniform-addition (:plushy parent1) utils/instructions umad-rate)
+      (if (< mutation-type 0.7) (v/uniform-addition (:plushy parent1) utils/instructions umad-rate)
          (v/uniform-deletion (:plushy parent1) umad-rate)))))
 
 (defn create-new-population "returns a list of plushies that make it to the next generation"
