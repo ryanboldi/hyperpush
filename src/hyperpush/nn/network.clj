@@ -38,10 +38,8 @@
 (defn feed-forward-2d
   "feeds forward through a list of connection matrices"
   [list-of-connection-matrices inputs]
-  (println inputs)
   (let [layers (count list-of-connection-matrices)]
     (loop [index 0 current (conj inputs 1)]
-      (println current)
       (if (>= index layers)
         current
         (recur (inc index) (map #(hyperpush.cppn.instructions/sigmoid %) (feed-forward-1d-layer current (nth list-of-connection-matrices index))))))))

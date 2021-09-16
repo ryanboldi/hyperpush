@@ -14,6 +14,8 @@
 
 (def xor-substrate (subs/make-2d-substrate 2 1 1))
 
+xor-substrate
+
 (defn random-xor-network []
   (let [push (utils/random-push)]
     (nn/connect-2d xor-substrate push)))
@@ -41,6 +43,8 @@
 
 (def new-pop (assign-fitness-xor (gp/genotype-to-phenotype-2d (gp/create-new-population pop-map) xor-substrate)))
 
+new-pop
+
 (def new-pop (-> pop-map
                  gp/create-new-population
                  (gp/genotype-to-phenotype-2d xor-substrate)
@@ -55,9 +59,9 @@
 
 (defn -main []
   (println "RUNNING XOR EVOLUTION")
-  (let [generations 100
+  (let [generations 1000
         goal-error 0.1
-        popsize 100]
+        popsize 10]
     (loop [population (-> popsize
                           gp/init-population
                           (gp/genotype-to-phenotype-2d xor-substrate)
